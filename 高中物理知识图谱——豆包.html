@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>高中物理知识图谱 · 人教版必修+选择性必修</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230ea5e9'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='sans-serif'%3Eph%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#0f1b2d;
+    --panel:#16263d;
+    --panel2:#1d3350;
+    --ink:#e8eef7;
+    --sub:#9fb3cc;
+    --accent:#38bdf8;
+    --accent2:#34d399;
+    --warn:#fbbf24;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;
+    background:linear-gradient(160deg,#0c1626 0%,#0f1b2d 60%,#10233a 100%);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  header{
+    padding:28px 32px 18px;
+    border-bottom:1px solid rgba(120,160,210,.18);
+  }
+  header h1{
+    font-size:26px;font-weight:700;letter-spacing:1px;
+    background:linear-gradient(90deg,#7dd3fc,#34d399);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  header p{margin-top:8px;color:var(--sub);font-size:13px;line-height:1.7}
+  .legend{margin-top:10px;font-size:12px;color:var(--sub)}
+  .legend span{display:inline-block;margin-right:16px}
+  .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
+
+  /* 知识主线区 */
+  .threads{
+    padding:20px 32px 8px;
+  }
+  .threads h2{
+    font-size:15px;color:var(--accent);margin-bottom:12px;font-weight:600;
+    letter-spacing:1px;
+  }
+  .thread-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+  }
+  .thread{
+    background:rgba(29,51,80,.7);
+    border:1px solid rgba(120,160,210,.2);
+    border-left:3px solid var(--accent);
+    border-radius:8px;
+    padding:12px 14px;
+  }
+  .thread:nth-child(2){border-left-color:var(--accent2)}
+  .thread:nth-child(3){border-left-color:var(--warn)}
+  .thread:nth-child(4){border-left-color:#f472b6}
+  .thread:nth-child(5){border-left-color:#a78bfa}
+  .thread:nth-child(6){border-left-color:#fb923c}
+  .thread h3{font-size:13.5px;margin-bottom:6px;color:var(--ink)}
+  .thread p{font-size:12px;color:var(--sub);line-height:1.65}
+  .thread b{color:var(--ink);font-weight:600}
+
+  /* 思维导图容器 */
+  .map-wrap{
+    padding:16px 24px 32px;
+  }
+  .map-wrap h2{font-size:15px;color:var(--accent);margin:6px 0 10px;letter-spacing:1px}
+  #mindmap{
+    width:100%;
+    height:860px;
+    background:rgba(10,20,35,.55);
+    border:1px solid rgba(120,160,210,.2);
+    border-radius:12px;
+    position:relative;
+  }
+  #mindmap svg{width:100%;height:100%;display:block}
+  .map-toolbar{
+    position:absolute;top:10px;right:12px;z-index:5;display:flex;gap:8px;
+  }
+  .map-toolbar button{
+    background:rgba(56,189,248,.15);
+    border:1px solid rgba(56,189,248,.4);
+    color:#7dd3fc;border-radius:6px;
+    padding:5px 12px;font-size:12px;cursor:pointer;
+  }
+  .map-toolbar button:hover{background:rgba(56,189,248,.3)}
+  footer{padding:0 32px 24px;color:var(--sub);font-size:12px;line-height:1.7}
+  @media(max-width:900px){
+    .thread-grid{grid-template-columns:1fr}
+    #mindmap{height:640px}
+    header{padding:20px}
+    .threads{padding:16px 20px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>高中物理知识图谱</h1>
+  <p>依据人教版（2019）普通高中物理教科书 · 必修第一/二/三册 + 选择性必修第一/二/三册，按学科逻辑重组为六大模块；点击节点可展开 / 折叠，滚轮缩放，拖拽平移。</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#38bdf8"></i>力学</span>
+    <span><i class="dot" style="background:#34d399"></i>振动与波 / 光学</span>
+    <span><i class="dot" style="background:#fbbf24"></i>电磁学</span>
+    <span><i class="dot" style="background:#f472b6"></i>热学</span>
+    <span><i class="dot" style="background:#a78bfa"></i>近代物理</span>
+    <span><i class="dot" style="background:#fb923c"></i>实验与方法</span>
+  </div>
+</header>
+
+<!-- ===== 跨章节知识主线（图谱关联）===== -->
+<section class="threads">
+  <h2>六大知识主线 · 跨章节关联</h2>
+  <div class="thread-grid">
+    <div class="thread">
+      <h3>① 力与运动的三条等价途径</h3>
+      <p>同一力学问题的三种解法：<b>牛顿第二定律</b> F=ma ＋运动学 → <b>动量定理</b> Ft=Δp → <b>动能定理</b> W=ΔEk → <b>能量/动量守恒</b>。</p>
+    </div>
+    <div class="thread">
+      <h3>② 三场的类比</h3>
+      <p><b>引力场 g</b> ↔ <b>电场强度 E</b> ↔ <b>磁感应强度 B</b>：都是矢量场，都用"场强"描述力的性质，都满足矢量叠加原理。</p>
+    </div>
+    <div class="thread">
+      <h3>③ 平方反比力</h3>
+      <p><b>万有引力</b> F=GMm/r² ↔ <b>库仑力</b> F=k·q₁q₂/r²：形式一致，均与距离平方成反比，是"场"观念的起点。</p>
+    </div>
+    <div class="thread">
+      <h3>④ 能量守恒主线</h3>
+      <p>机械能守恒 → 电路中电能与焦耳热 → <b>热力学第一定律</b> ΔU=W+Q → 普适能量守恒定律。贯穿全部教材。</p>
+    </div>
+    <div class="thread">
+      <h3>⑤ 电磁相互联系</h3>
+      <p>电生磁（电流磁效应）→ 磁生电（<b>法拉第电磁感应</b>）→ 麦克斯韦预言 → 赫兹证实 <b>电磁波</b>。</p>
+    </div>
+    <div class="thread">
+      <h3>⑥ 波动的共性</h3>
+      <p><b>机械波</b>（干涉/衍射/多普勒）↔ <b>光波</b>（干涉/衍射/偏振）↔ <b>电磁波谱</b>：波的现象跨物质形态统一。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 思维导图主体 ===== -->
+<section class="map-wrap">
+  <h2>知识树（点击圆点折叠 / 展开）</h2>
+  <div id="mindmap">
+    <div class="map-toolbar" style="top:10px;right:12px;color:#7dd3fc;font-size:12px;pointer-events:none">
+      点击圆点折叠/展开 · 滚轮缩放 · 拖拽平移
+    </div>
+    <div id="chart" style="width:100%;height:100%"></div>
+  </div>
+</section>
+
+<footer>
+  说明：知识节点与章节标题均来自人教版（2019）教材目录，公式为高中阶段核心公式；六大主线为跨章节关联，帮助理解知识之间的逻辑联系。
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<script>
+  function n(content, children){ return { name: content, children: children || [] }; }
+  var raw = [
+
+    n('一、力学', [
+      n('1. 运动的描述〔必修1·第1章〕', [
+        n('质点、参考系、坐标系'),
+        n('时刻与时间间隔；位移 vs 路程（矢量/标量）'),
+        n('速度 v=Δx/Δt；平均速度 / 瞬时速度'),
+        n('加速度 a=Δv/Δt（速度变化快慢）')
+      ]),
+      n('2. 匀变速直线运动〔必修1·第2章〕', [
+        n('速度公式 v=v₀+at'),
+        n('位移公式 x=v₀t+½at²'),
+        n('推论 v²−v₀²=2ax'),
+        n('自由落体：v=gt，h=½gt²'),
+        n('实验：打点计时器测速度与加速度')
+      ]),
+      n('3. 相互作用——力〔必修1·第3章〕', [
+        n('重力 G=mg，重心'),
+        n('弹力；胡克定律 F=kx'),
+        n('滑动摩擦 f=μN；静摩擦力'),
+        n('力的合成与分解（平行四边形定则）'),
+        n('共点力的平衡条件')
+      ]),
+      n('4. 牛顿运动定律〔必修1·第4章〕', [
+        n('牛顿第一定律（惯性）'),
+        n('实验：探究 a 与 F、m 的关系'),
+        n('牛顿第二定律 F=ma'),
+        n('牛顿第三定律（作用力与反作用力）'),
+        n('牛顿定律的应用；超重与失重')
+      ]),
+      n('5. 抛体运动〔必修2·第5章〕', [
+        n('曲线运动条件（合力与速度不共线）'),
+        n('运动的合成与分解'),
+        n('实验：探究平抛运动特点'),
+        n('平抛：水平匀速 + 竖直自由落体')
+      ]),
+      n('6. 圆周运动〔必修2·第6章〕', [
+        n('线速度 v、角速度 ω、周期 T（v=ωr）'),
+        n('向心加速度 a=v²/r=ω²r'),
+        n('向心力 F=mv²/r'),
+        n('生活中的圆周运动（转弯、拱桥、过山车）')
+      ]),
+      n('7. 万有引力与宇宙航行〔必修2·第7章〕', [
+        n('开普勒行星运动三定律'),
+        n('万有引力定律 F=GMm/r²'),
+        n('理论成就（称重地球、发现海王星）'),
+        n('宇宙航行：第一/二/三宇宙速度'),
+        n('相对论时空观与牛顿力学局限')
+      ]),
+      n('8. 机械能守恒定律〔必修2·第8章〕', [
+        n('功 W=Flcosθ；功率 P=W/t=Fv'),
+        n('重力势能 Ep=mgh'),
+        n('动能 Ek=½mv²；动能定理 W合=ΔEk'),
+        n('机械能守恒定律（只有重力/弹力做功）'),
+        n('实验：验证机械能守恒')
+      ]),
+      n('9. 动量守恒定律〔选必1·第1章〕', [
+        n('动量 p=mv；冲量 I=Ft'),
+        n('动量定理 Ft=Δp'),
+        n('动量守恒定律（系统合外力为零）'),
+        n('实验：验证动量守恒'),
+        n('弹性碰撞 / 非弹性碰撞；反冲与火箭')
+      ])
+    ]),
+
+    n('二、振动与波', [
+      n('机械振动〔选必1·第2章〕', [
+        n('弹簧振子：回复力 F=−kx'),
+        n('描述量：振幅、周期 T、频率 f'),
+        n('单摆周期 T=2π√(L/g)'),
+        n('实验：用单摆测重力加速度 g'),
+        n('受迫振动、共振')
+      ]),
+      n('机械波〔选必1·第3章〕', [
+        n('横波与纵波；波的形成'),
+        n('波长 λ、波速 v=λf'),
+        n('波的反射、折射、衍射'),
+        n('波的干涉（条件：频率相同）'),
+        n('多普勒效应')
+      ])
+    ]),
+
+    n('三、光学〔选必1·第4章〕', [
+      n('光的折射定律 n=sin i / sin r'),
+      n('全反射；临界角'),
+      n('光的干涉：双缝干涉 Δx=Lλ/d'),
+      n('实验：用双缝干涉测光的波长'),
+      n('光的衍射'),
+      n('光的偏振；激光及其应用')
+    ]),
+
+    n('四、电磁学', [
+      n('静电场〔必修3·第9、10章〕', [
+        n('电荷守恒；库仑定律 F=kq₁q₂/r²'),
+        n('电场强度 E=F/q；电场线'),
+        n('电势能、电势 φ、电势差 U=W/q'),
+        n('匀强电场中 U=Ed'),
+        n('电容器电容 C=Q/U'),
+        n('带电粒子在电场中的加速与偏转')
+      ]),
+      n('恒定电流〔必修3·第11、12章〕', [
+        n('电流 I=q/t；电源与电动势 E'),
+        n('电阻定律 R=ρL/S'),
+        n('欧姆定律 I=U/R'),
+        n('串、并联电路规律'),
+        n('闭合电路欧姆定律 I=E/(R+r)'),
+        n('电功 W=UIt、电功率 P=UI'),
+        n('焦耳定律 Q=I²Rt'),
+        n('实验：测电阻率；测电源 E 与 r；多用电表')
+      ]),
+      n('磁场〔必修3·第13章 + 选必2·第1章〕', [
+        n('磁场、磁感线；磁感应强度 B'),
+        n('磁通量 Φ=BS'),
+        n('安培力 F=BIL（⊥时）'),
+        n('洛伦兹力 f=qvB'),
+        n('带电粒子在匀强磁场中圆周 r=mv/(qB)'),
+        n('质谱仪、回旋加速器')
+      ]),
+      n('电磁感应〔选必2·第2章〕', [
+        n('电磁感应现象'),
+        n('楞次定律（"阻碍"）'),
+        n('法拉第电磁感应定律 E=n·ΔΦ/Δt'),
+        n('动生电动势 / 感生电动势'),
+        n('互感、自感；涡流、电磁阻尼')
+      ]),
+      n('交变电流〔选必2·第3章〕', [
+        n('正弦式交变电流的产生'),
+        n('有效值与峰值'),
+        n('变压器 U₁/U₂=n₁/n₂'),
+        n('远距离输电（高压减小损耗）')
+      ]),
+      n('电磁波与传感器〔选必2·第4、5章〕', [
+        n('电磁振荡；麦克斯韦电磁场理论'),
+        n('电磁波的发射与接收'),
+        n('电磁波谱（无线电→γ射线）'),
+        n('常见传感器原理与应用')
+      ])
+    ]),
+
+    n('五、热学〔选必3〕', [
+      n('分子动理论〔第1章〕', [
+        n('物体由大量分子组成；阿伏伽德罗常数'),
+        n('实验：油膜法估测分子大小'),
+        n('分子热运动；分子力与分子势能'),
+        n('分子动能；温度是平均动能标志')
+      ]),
+      n('气体 固体 液体〔第2章〕', [
+        n('温度与温标'),
+        n('玻意耳定律 pV=C（等温）'),
+        n('查理定律 p/T=C（等容）'),
+        n('盖-吕萨克定律 V/T=C（等压）'),
+        n('理想气体状态方程 pV/T=C'),
+        n('固体（晶体/非晶体）、液体（表面张力）')
+      ]),
+      n('热力学定律〔第3章〕', [
+        n('做功与热传递改变内能'),
+        n('热力学第一定律 ΔU=W+Q'),
+        n('能量守恒定律'),
+        n('热力学第二定律（方向性）')
+      ])
+    ]),
+
+    n('六、近代物理〔选必3〕', [
+      n('波粒二象性〔第4章〕', [
+        n('黑体辐射；能量子 ε=hν'),
+        n('光电效应方程 Eₖ=hν−W₀'),
+        n('光的波粒二象性'),
+        n('原子核式结构模型（α 粒子散射）'),
+        n('玻尔原子模型；氢原子光谱'),
+        n('物质波 λ=h/p（德布罗意）')
+      ]),
+      n('原子核〔第5章〕', [
+        n('原子核的组成（质子+中子）'),
+        n('天然放射现象：α、β、γ 射线'),
+        n('半衰期'),
+        n('核力与结合能；质能方程 E=mc²'),
+        n('核裂变（链式反应）与核聚变'),
+        n('"基本"粒子')
+      ])
+    ]),
+
+    n('七、物理实验与方法（贯穿）', [
+      n('基本仪器：打点计时器、游标卡尺、螺旋测微器、多用电表'),
+      n('力学：测 a、验证牛二、验证机械能守恒、验证动量守恒、单摆测 g'),
+      n('电学：测电阻率、测电源 E/r、描绘伏安特性'),
+      n('光学：双缝干涉测波长'),
+      n('热学：油膜法估测分子大小'),
+      n('科学方法：理想模型、控制变量、比值定义法、守恒思想、图象法')
+    ])
+  ];
+
+  var palette = ['#38bdf8','#34d399','#34d399','#fbbf24','#f472b6','#a78bfa','#fb923c'];
+  raw.forEach(function(node, i){
+    node.itemStyle = { color: palette[i] || '#94a3b8' };
+  });
+  var rootNode = { name: '高中物理（人教版）', children: raw,
+    itemStyle:{color:'#e8eef7'}, label:{color:'#e8eef7',fontWeight:'bold'} };
+
+  window.addEventListener('load', function () {
+    var chart = echarts.init(document.getElementById('chart'), null, {renderer:'canvas'});
+    window._chart = chart;
+    chart.setOption({
+      backgroundColor: 'transparent',
+      tooltip: { trigger: 'item', triggerOn: 'mousemove' },
+      series: [{
+        type: 'tree',
+        data: [rootNode],
+        top: '2%', left: '12%', bottom: '2%', right: '18%',
+        symbolSize: 9,
+        orient: 'LR',
+        initialTreeDepth: 2,
+        roam: true,
+        expandAndCollapse: true,
+        animationDuration: 300,
+        label: {
+          position: 'left',
+          verticalAlign: 'middle',
+          align: 'right',
+          fontSize: 12,
+          color: '#d7e3f4'
+        },
+        leaves: {
+          label: { position: 'right', verticalAlign: 'middle', align: 'left', color:'#9fb3cc' }
+        },
+        emphasis: { focus: 'descendant' },
+        lineStyle: { color: '#3a5578', width: 1.2, curveness: 0.5 }
+      }]
+    });
+    window.addEventListener('resize', function(){ chart.resize(); });
+  });
+</script>
+</body>
+</html>
